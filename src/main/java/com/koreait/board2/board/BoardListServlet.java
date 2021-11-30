@@ -19,14 +19,14 @@ public class BoardListServlet extends HttpServlet {
         int recordCnt = 5;
         BoardParamVO param = new BoardParamVO();
         param.setRecordCnt(recordCnt);
-        req.setAttribute("maxPage",BoardDAO.selMaxpage(param));
-        int page = Integer.parseInt(req.getParameter("page"));
+        req.setAttribute("maxPage", BoardDAO.selMaxpage(param));
+
+        int page = MyUtils.getParameterInt(req, "page", 1);
         param.setPage(page);
 
-        List<BoardVO> list = BoardDAO.listboard(param);
-        req.setAttribute("list", list);
-        String path = "/WEB-INF/view/board/list.jsp";
-        req.getRequestDispatcher(path).forward(req, res);
+        req.setAttribute("list", BoardDAO.listboard(param));
+        //disForward는 항상 가장 아래
+        MyUtils.disForward(req, res, "board/list");
     }
 
     @Override

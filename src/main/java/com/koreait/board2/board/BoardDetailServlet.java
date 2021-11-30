@@ -16,7 +16,7 @@ public class BoardDetailServlet extends HttpServlet {
         BoardVO vo = new BoardVO();
         vo.setIboard(Integer.parseInt(req.getParameter("iboard")));
         BoardVO result = BoardDAO.detailboard(vo);
-        req.setAttribute("detail",result);
+        req.setAttribute("data",result);
         String path = "/WEB-INF/view/board/detail.jsp";
         req.getRequestDispatcher(path).forward(req, res);
     }

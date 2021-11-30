@@ -12,7 +12,6 @@ import java.util.List;
 
 public class BoardDAO {
     public static int selMaxpage(BoardParamVO param){
-        BoardParamVO vo = new BoardParamVO();
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -23,7 +22,7 @@ public class BoardDAO {
             ps.setInt(1,param.getRecordCnt());
             rs = ps.executeQuery();
             if(rs.next()){
-                return rs.getInt(param.getPage()); //첫번째 컬럼
+                return rs.getInt(1); //첫번째 컬럼
             }
 
         }catch (Exception e){
@@ -38,7 +37,7 @@ public class BoardDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT A.title, A.iboard, A.ctnt, A.rdt, B.nm AS writerNm FROM t_board A INNER JOIN t_user B ON A.writer = B.iuser WHERE iboard = ?";
+        String sql = "SELECT B.nm AS writerNm ,A.iboard, A.title, A.ctnt, A.rdt, A.writer, A.mdt FROM t_board A INNER JOIN t_user B ON A.writer = B.iuser WHERE A.iboard=?";
         try{
             con = DbUtils.getCon();
             ps = con.prepareStatement(sql);
@@ -50,6 +49,8 @@ public class BoardDAO {
                 vo.setTitle(rs.getString("title"));
                 vo.setCtnt(rs.getString("ctnt"));
                 vo.setRdt(rs.getString("rdt"));
+                vo.setWriter(rs.getInt("writer"));
+                vo.setMdt(rs.getString("mdt"));
             }
         }catch (Exception e){
             e.printStackTrace();
